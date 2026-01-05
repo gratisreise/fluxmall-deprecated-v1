@@ -3,17 +3,16 @@ package com.fluxmall.repository;
 
 import com.fluxmall.mapper.CartRowMapper;
 import com.fluxmall.model.Cart;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
+@RequiredArgsConstructor
 public class CartRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public CartRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     // 회원 장바구니 생성 또는 조회 (회원당 하나)
     public Cart findOrCreateByMemberId(Long memberId) {

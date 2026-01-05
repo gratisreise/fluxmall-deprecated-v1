@@ -2,19 +2,17 @@ package com.fluxmall.repository;
 
 import com.fluxmall.mapper.ProductRowMapper;
 import com.fluxmall.model.Product;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    public ProductRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void save(Product product) {
         String sql = "INSERT INTO products (member_id, name, description, price, stock_quantity, product_status) " +

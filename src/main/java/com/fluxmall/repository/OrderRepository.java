@@ -1,19 +1,18 @@
 package com.fluxmall.repository;
 
 import com.fluxmall.mapper.OrderRowMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class OrderRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public OrderRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void save(Order order) {
         String sql = "INSERT INTO orders (member_id, order_number, total_price, order_status, shipping_address) " +

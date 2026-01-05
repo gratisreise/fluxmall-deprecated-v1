@@ -3,19 +3,17 @@ package com.fluxmall.repository;
 
 import com.fluxmall.mapper.OrderItemRowMapper;
 import com.fluxmall.model.OrderItem;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
+@RequiredArgsConstructor
 public class OrderItemRepository {
 
     private final JdbcTemplate jdbcTemplate;
-
-    public OrderItemRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     public void save(OrderItem orderItem) {
         String sql = "INSERT INTO order_item (order_id, product_id, quantity, price) VALUES (?, ?, ?, ?)";

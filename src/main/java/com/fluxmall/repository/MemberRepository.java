@@ -3,6 +3,7 @@ package com.fluxmall.repository;
 
 import com.fluxmall.mapper.MemberRowMapper;
 import com.fluxmall.model.Member;
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -10,13 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class MemberRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public MemberRepository(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     // 회원 등록
     public void save(Member member) {
