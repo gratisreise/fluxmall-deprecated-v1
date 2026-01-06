@@ -1,22 +1,21 @@
 package com.fluxmall.domain.mapper;
 
-
-import com.fluxmall.domain.Member;
-import org.springframework.jdbc.core.RowMapper;
+import com.fluxmall.domain.vo.MemberVO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
-public class MemberRowMapper implements RowMapper<Member> {
 
+public class MemberRowMapper implements RowMapper<MemberVO> {
     @Override
-    public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Member member = new Member();
-        member.setId(rs.getLong("id"));
-        member.setUsername(rs.getString("username"));
-        member.setPassword(rs.getString("password"));
-        member.setNickname(rs.getString("nickname"));
-        member.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-        member.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-        return member;
+    public MemberVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return MemberVO.builder()
+                .id(rs.getLong("id"))
+                .username(rs.getString("username"))
+                .password(rs.getString("password"))
+                .nickname(rs.getString("nickname"))
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+                .build();
     }
 }

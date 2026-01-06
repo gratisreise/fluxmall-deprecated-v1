@@ -1,20 +1,18 @@
 package com.fluxmall.domain.mapper;
 
-
-import com.fluxmall.domain.Cart;
-import org.springframework.jdbc.core.RowMapper;
+import com.fluxmall.domain.vo.CartVO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
-public class CartRowMapper implements RowMapper<Cart> {
-
-    @Override
-    public Cart mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Cart cart = new Cart();
-        cart.setId(rs.getLong("id"));
-        cart.setMemberId(rs.getLong("member_id"));
-        cart.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-        cart.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-        return cart;
+public class CartRowMapper implements RowMapper<CartVO> {
+        @Override
+        public CartVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return CartVO.builder()
+                    .id(rs.getLong("id"))
+                    .memberId(rs.getLong("member_id"))
+                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                    .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+                    .build();
+        }
     }
-}

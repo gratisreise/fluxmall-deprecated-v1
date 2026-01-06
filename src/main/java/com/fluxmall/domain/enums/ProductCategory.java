@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-/**
- * 상품 카테고리 (한글로 표현)
- */
 @Getter
 @RequiredArgsConstructor
 public enum ProductCategory {

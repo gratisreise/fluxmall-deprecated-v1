@@ -1,23 +1,23 @@
 package com.fluxmall.domain.mapper;
 
-
-import com.fluxmall.domain.OrderItem;
-import org.springframework.jdbc.core.RowMapper;
+import com.fluxmall.domain.vo.OrderItemVO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
-public class OrderItemRowMapper implements RowMapper<OrderItem> {
-
+public class OrderItemRowMapper implements RowMapper<OrderItemVO> {
     @Override
-    public OrderItem mapRow(ResultSet rs, int rowNum) throws SQLException {
-        OrderItem orderItem = new OrderItem();
-        orderItem.setId(rs.getLong("id"));
-        orderItem.setOrderId(rs.getLong("order_id"));
-        orderItem.setProductId(rs.getLong("product_id"));
-        orderItem.setQuantity(rs.getInt("quantity"));
-        orderItem.setPrice(rs.getInt("price"));
-        orderItem.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-        orderItem.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-        return orderItem;
+    public OrderItemVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return OrderItemVO.builder()
+                .id(rs.getLong("id"))
+                .orderId(rs.getLong("order_id"))
+                .productId(rs.getLong("product_id"))
+                .quantity(rs.getInt("quantity"))
+                .price(rs.getInt("price"))
+                .productName(rs.getString("product_name"))
+                .productCategory(rs.getString("product_category"))
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+                .build();
     }
 }

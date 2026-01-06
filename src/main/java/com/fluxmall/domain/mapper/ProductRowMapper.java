@@ -1,25 +1,26 @@
 package com.fluxmall.domain.mapper;
 
-
-import com.fluxmall.domain.Product;
-import org.springframework.jdbc.core.RowMapper;
+import com.fluxmall.domain.enums.ProductCategory;
+import com.fluxmall.domain.enums.ProductStatus;
+import com.fluxmall.domain.vo.ProductVO;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
 
-public class ProductRowMapper implements RowMapper<Product> {
-
+public class ProductRowMapper implements RowMapper<ProductVO> {
     @Override
-    public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Product product = new Product();
-        product.setId(rs.getLong("id"));
-        product.setMemberId(rs.getLong("member_id"));
-        product.setName(rs.getString("name"));
-        product.setDescription(rs.getString("description"));
-        product.setPrice(rs.getInt("price"));
-        product.setStockQuantity(rs.getInt("stock_quantity"));
-        product.setProductStatus(rs.getString("product_status"));
-        product.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-        product.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-        return product;
+    public ProductVO mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return ProductVO.builder()
+                .id(rs.getLong("id"))
+                .memberId(rs.getLong("member_id"))
+                .name(rs.getString("name"))
+                .description(rs.getString("description"))
+                .category(ProductCategory.valueOf(rs.getString("category")))
+                .price(rs.getInt("price"))
+                .stockQuantity(rs.getInt("stock_quantity"))
+                .status(ProductStatus.valueOf(rs.getString("product_status")))
+                .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
+                .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
+                .build();
     }
 }

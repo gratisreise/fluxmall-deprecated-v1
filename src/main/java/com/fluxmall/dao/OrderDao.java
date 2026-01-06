@@ -1,6 +1,8 @@
 package com.fluxmall.dao;
 
 import com.fluxmall.domain.enums.OrderStatus;
+import com.fluxmall.domain.mapper.OrderItemRowMapper;
+import com.fluxmall.domain.mapper.OrderRowMapper;
 import com.fluxmall.domain.vo.OrderItemVO;
 import com.fluxmall.domain.vo.OrderVO;
 import lombok.RequiredArgsConstructor;
@@ -103,39 +105,5 @@ public class OrderDao {
     public int updateOrderStatus(Long orderId, OrderStatus newStatus) {
         String sql = "UPDATE orders SET order_status = ? WHERE id = ?";
         return jdbcTemplate.update(sql, newStatus.name(), orderId);
-    }
-
-    // RowMapper들
-    private static class OrderRowMapper implements RowMapper<OrderVO> {
-        @Override
-        public OrderVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return OrderVO.builder()
-                    .id(rs.getLong("id"))
-                    .memberId(rs.getLong("member_id"))
-                    .orderNumber(rs.getString("order_number"))
-                    .totalPrice(rs.getInt("total_price"))
-                    .status(OrderStatus.valueOf(rs.getString("order_status")))
-                    .shippingAddress(rs.getString("shipping_address"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
-                    .build();
-        }
-    }
-
-    private static class OrderItemRowMapper implements RowMapper<OrderItemVO> {
-        @Override
-        public OrderItemVO mapRow(ResultSet rs, int rowNum) throws SQLException {
-            return OrderItemVO.builder()
-                    .id(rs.getLong("id"))
-                    .orderId(rs.getLong("order_id"))
-                    .productId(rs.getLong("product_id"))
-                    .quantity(rs.getInt("quantity"))
-                    .price(rs.getInt("price"))
-                    .productName(rs.getString("product_name"))
-                    .productCategory(rs.getString("product_category"))
-                    .createdAt(rs.getTimestamp("created_at").toLocalDateTime())
-                    .updatedAt(rs.getTimestamp("updated_at").toLocalDateTime())
-                    .build();
-        }
     }
 }
