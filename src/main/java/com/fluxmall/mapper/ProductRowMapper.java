@@ -1,7 +1,7 @@
 package com.fluxmall.mapper;
 
 
-import com.fluxmall.model.Product;
+import com.fluxmall.domain.Product;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;

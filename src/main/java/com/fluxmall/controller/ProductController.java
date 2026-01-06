@@ -10,6 +10,24 @@ import org.springframework.stereotype.Controller;
 public class ProductController {
     private final ProductService productService;
 
+    //제품상세 페이지
+
+
+    //제품목록페이지
+
+    //제품검색 페이지
+
+    //제품생성
+
+    //제품상세
+
+    //제품목록조회
+
+    //제품수정
+
+    //제품삭제
+
+
 
 
 }

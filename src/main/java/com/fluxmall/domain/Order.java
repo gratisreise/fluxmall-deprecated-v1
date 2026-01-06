@@ -1,5 +1,5 @@
 // Order.java (주문)
-package com.fluxmall.model;
+package com.fluxmall.domain;
 
 import lombok.*;
 

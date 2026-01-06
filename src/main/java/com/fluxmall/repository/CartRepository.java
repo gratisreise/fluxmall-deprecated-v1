@@ -2,7 +2,7 @@ package com.fluxmall.repository;
 
 
 import com.fluxmall.mapper.CartRowMapper;
-import com.fluxmall.model.Cart;
+import com.fluxmall.domain.Cart;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

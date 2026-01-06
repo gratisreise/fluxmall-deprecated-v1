@@ -1,5 +1,5 @@
 // Product.java
-package com.fluxmall.model;
+package com.fluxmall.domain;
 
 import lombok.*;
 
@@ -13,7 +13,7 @@ public class Product {
     private Long memberId;        // 판매자 회원 ID
     private String name;
     private String description;
-    private Integer price;        // NULL 허용이지만 Integer로 (price > 0 체크는 DB에서)
+    private int price;
     private int stockQuantity;
     private String productStatus; // ex: "SALE", "SOLD_OUT", "DISCOUNT" 등
     private LocalDateTime createdAt;

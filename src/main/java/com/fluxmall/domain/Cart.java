@@ -1,5 +1,5 @@
 // Cart.java (장바구니)
-package com.fluxmall.model;
+package com.fluxmall.domain;
 
 import lombok.*;
 

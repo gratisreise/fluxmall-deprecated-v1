@@ -1,5 +1,5 @@
 // Member.java
-package com.fluxmall.model;
+package com.fluxmall.domain;
 
 import lombok.*;
 

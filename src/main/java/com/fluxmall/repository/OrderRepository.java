@@ -1,6 +1,7 @@
 package com.fluxmall.repository;
 
 import com.fluxmall.mapper.OrderRowMapper;
+import com.fluxmall.domain.Order;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

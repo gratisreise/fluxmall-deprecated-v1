@@ -1,14 +1,14 @@
 package com.fluxmall.service;
 
-
-import com.fluxmall.repository.OrderRepository;
+import com.fluxmall.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class OrderService {
-    private final OrderRepository orderRepository;
+public class MemberService {
+    private final MemberRepository memberRepository;
+
 
 
 }

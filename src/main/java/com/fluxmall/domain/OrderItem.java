@@ -1,5 +1,5 @@
 // OrderItem.java (주문 상품)
-package com.fluxmall.model;
+package com.fluxmall.domain;
 
 import lombok.*;
 
