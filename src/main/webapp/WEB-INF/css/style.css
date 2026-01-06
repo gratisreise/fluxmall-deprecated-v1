@@ -547,3 +547,106 @@ section h2 {
 .btn-order-final:hover {
   background: #d35400;
 }
+
+/* 주문 완료 페이지 */
+.order-success-container {
+  max-width: 800px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.success-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.success-title {
+  font-size: 36px;
+  color: #27ae60;
+  margin-bottom: 20px;
+}
+
+.success-message {
+  font-size: 18px;
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+
+.order-summary-box {
+  background: #f8f9fa;
+  padding: 30px;
+  border-radius: 10px;
+  margin: 40px 0;
+}
+
+.order-summary-box h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.order-summary-table {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: left;
+  font-size: 18px;
+}
+
+.order-summary-table th {
+  width: 30%;
+  padding: 15px;
+  background: #ecf0f1;
+  font-weight: bold;
+}
+
+.order-summary-table td {
+  padding: 15px;
+  background: white;
+}
+
+.status-pending {
+  color: #e67e22;
+  font-weight: bold;
+}
+
+.success-actions {
+  margin: 50px 0;
+}
+
+.btn-primary, .btn-secondary {
+  display: inline-block;
+  padding: 16px 40px;
+  font-size: 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+.btn-primary {
+  background: #3498db;
+  color: white;
+}
+
+.btn-secondary {
+  background: #95a5a6;
+  color: white;
+}
+
+.success-notice {
+  margin-top: 60px;
+  padding: 20px;
+  background: #f0f8ff;
+  border-radius: 8px;
+  color: #555;
+  line-height: 1.8;
+}
+
+.success-notice p {
+  margin: 10px 0;
+}
