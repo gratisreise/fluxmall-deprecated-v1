@@ -1,6 +1,6 @@
 package com.fluxmall.service;
 
-import com.fluxmall.domain.dao.MemberDao;
+import com.fluxmall.dao.MemberDao;
 import com.fluxmall.domain.vo.MemberVO;
 import javax.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

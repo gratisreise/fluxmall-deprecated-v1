@@ -1,4 +1,4 @@
-package com.fluxmall.domain.dao;
+package com.fluxmall.dao;
 
 import com.fluxmall.domain.vo.MemberVO;
 import lombok.RequiredArgsConstructor;

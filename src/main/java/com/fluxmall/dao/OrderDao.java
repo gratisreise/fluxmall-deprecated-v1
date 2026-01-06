@@ -1,4 +1,4 @@
-package com.fluxmall.domain.dao;
+package com.fluxmall.dao;
 
 import com.fluxmall.domain.enums.OrderStatus;
 import com.fluxmall.domain.vo.OrderItemVO;

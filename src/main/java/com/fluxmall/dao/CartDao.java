@@ -1,4 +1,4 @@
-package com.fluxmall.domain.dao;
+package com.fluxmall.dao;
 
 import com.fluxmall.domain.enums.ProductStatus;
 import com.fluxmall.domain.vo.CartItemVO;

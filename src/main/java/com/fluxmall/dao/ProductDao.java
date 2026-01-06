@@ -1,4 +1,4 @@
-package com.fluxmall.domain.dao;
+package com.fluxmall.dao;
 
 import com.fluxmall.domain.enums.ProductCategory;
 import com.fluxmall.domain.enums.ProductStatus;
@@ -66,6 +66,16 @@ public class ProductDao {
         return jdbcTemplate.update(sql, quantityToSubtract, productId, quantityToSubtract);
     }
 
+    public List<ProductVO> searchByKeyword(String keyword, int offset, int size) {
+        String sql = "SELECT * FROM products " +
+            "WHERE product_status = 'ON_SALE' " +
+            "AND (name LIKE CONCAT('%', ?, '%') OR description LIKE CONCAT('%', ?, '%')) " +
+            "ORDER BY id DESC LIMIT ? OFFSET ?";
+
+        String likeKeyword = keyword;
+        return jdbcTemplate.query(sql, new ProductRowMapper(), likeKeyword, likeKeyword, size, offset);
+    }
+
     private static class ProductRowMapper implements RowMapper<ProductVO> {
         @Override
         public ProductVO mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -83,4 +93,6 @@ public class ProductDao {
                     .build();
         }
     }
+
+
 }
