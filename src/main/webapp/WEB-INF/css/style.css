@@ -139,3 +139,151 @@ footer { background: #2c3e50; color: white; text-align: center; padding: 30px 0;
   color: #c53030;
   border: 1px solid #feb2b2;
 }
+
+
+/* 상품 상세 페이지 */
+.product-detail {
+  display: flex;
+  gap: 50px;
+  margin: 40px 0;
+  flex-wrap: wrap;
+}
+
+.product-images {
+  flex: 1;
+  min-width: 300px;
+}
+
+.main-image {
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.product-summary {
+  flex: 1;
+  min-width: 300px;
+}
+
+.product-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.product-category {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-bottom: 15px;
+}
+
+.product-price {
+  font-size: 24px;
+  margin: 20px 0;
+}
+
+.price-value {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+.product-stock {
+  font-size: 18px;
+  margin: 20px 0;
+}
+
+.in-stock { color: #27ae60; font-weight: bold; }
+.out-of-stock { color: #c0392b; font-weight: bold; }
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 30px 0;
+  font-size: 18px;
+}
+
+.quantity-selector button {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background: #ecf0f1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.quantity-selector input {
+  width: 80px;
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.product-actions-detail {
+  margin-top: 40px;
+}
+
+.btn-cart-large, .btn-buy-now {
+  padding: 16px 30px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 15px;
+}
+
+.btn-cart-large {
+  background: #3498db;
+  color: white;
+}
+
+.btn-buy-now {
+  background: #e67e22;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-cart-large:disabled {
+  background: #95a5a6;
+  cursor: not-allowed;
+}
+
+.product-description {
+  margin: 60px 0;
+  padding: 30px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.product-description h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+.description-content {
+  font-size: 16px;
+  line-height: 1.8;
+  white-space: pre-wrap;  /* 줄바꿈 유지 */
+}
+
+.back-link {
+  text-align: center;
+  margin: 50px 0;
+}
+
+.back-link a {
+  font-size: 18px;
+  color: #3498db;
+  text-decoration: none;
+}
+
+.back-link a:hover {
+  text-decoration: underline;
+}
