@@ -1,51 +1,81 @@
 package com.fluxmall.controller;
 
-import com.fluxmall.dto.MemberJoinDto;
+import com.fluxmall.domain.vo.MemberVO;
 import com.fluxmall.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController {
+
     private final MemberService memberService;
 
-    // 1. 회원가입 폼 페이지 (GET /user/join)
-    @GetMapping("/join")
-    public String joinForm() {
-        return "member/join";  // join.jsp
+    // 회원가입 폼
+    @GetMapping("/register")
+    public String registerForm() {
+        return "member/register";  // /WEB-INF/views/member/register.jsp
     }
 
-    // 2. 회원가입 처리 (POST /user/join)
-    @PostMapping("/join")
-    public String join(MemberJoinDto userJoinDto, Model model) {
-        // 간단한 유효성 체크 (실무에서는 @Valid + BindingResult 사용)
-        if (memberService.existsByUsername(userJoinDto.getUsername())) {
-            model.addAttribute("error", "이미 사용 중인 아이디입니다.");
-            return "user/join";
+    // 회원가입 처리
+    @PostMapping("/register")
+    public String register(MemberVO member, Model model) {
+        boolean success = memberService.register(member);
+        if (success) {
+            return "redirect:/member/login";  // 성공 시 로그인 페이지로
+        } else {
+            model.addAttribute("error", "아이디가 이미 존재합니다.");
+            return "member/register";
         }
-
-        memberService.join(userJoinDto);
-
-        // 가입 성공 후 로그인 페이지로 리다이렉트 또는 자동 로그인 처리
-        return "redirect:/user/login?success=join";
     }
 
-    //로그인 페이지
+    // 아이디 중복 체크 (AJAX)
+    @GetMapping("/checkUsername")
+    @ResponseBody
+    public boolean checkUsername(@RequestParam String username) {
+        return memberService.isUsernameDuplicate(username);
+    }
 
-    //내 정보 페이지
+    // 로그인 폼
+    @GetMapping("/login")
+    public String loginForm(@RequestParam(required = false) String error, Model model) {
+        if (error != null) {
+            model.addAttribute("error", "아이디 또는 비밀번호가 올바르지 않습니다.");
+        }
+        return "member/login";
+    }
 
-    //회원가입
+    // 로그아웃 (Spring Security 설정에 따라 /member/logout POST 처리)
+    @PostMapping("/logout")
+    public String logout() {
+        return "redirect:/";
+    }
 
-    //회원정보조회
+    // 마이페이지 (내 정보 조회)
+    @GetMapping("/myPage")
+    public String myPage(HttpSession session, Model model) {
+        MemberVO loginMember = memberService.getCurrentMember(session);
+        if (loginMember == null) {
+            return "redirect:/member/login";
+        }
+        model.addAttribute("member", loginMember);
+        return "member/myPage";
+    }
 
-    //회원정보 수정
-
-    //회원정보 삭제
-
+    // 내 정보 수정 처리
+    @PostMapping("/update")
+    public String updateMember(MemberVO updateMember, HttpSession session, Model model) {
+        boolean success = memberService.updateMember(updateMember, session);
+        if (success) {
+            model.addAttribute("message", "정보가 수정되었습니다.");
+        } else {
+            model.addAttribute("error", "수정 실패 (본인 확인 필요)");
+        }
+        return "redirect:/member/myPage";
+    }
 }
