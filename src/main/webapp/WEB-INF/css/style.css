@@ -1,0 +1,45 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans KR', sans-serif; line-height: 1.6; color: #333; }
+.container { width: 1200px; margin: 0 auto; padding: 20px; }
+
+header { background: #2c3e50; color: white; padding: 15px 0; }
+header .container { display: flex; justify-content: space-between; align-items: center; }
+.logo a { color: white; font-size: 24px; text-decoration: none; font-weight: bold; }
+.search-bar input { padding: 10px; width: 300px; border-radius: 4px; border: none; }
+.search-bar button { padding: 10px 15px; background: #3498db; color: white; border: none; cursor: pointer; }
+.user-menu a { color: white; margin-left: 15px; text-decoration: none; }
+.cart-icon { position: relative; }
+.badge { position: absolute; top: -8px; right: -8px; background: red; color: white; border-radius: 50%; padding: 2px 6px; font-size: 12px; }
+
+.page-title { text-align: center; margin: 40px 0 20px; font-size: 28px; }
+
+.category-tabs { text-align: center; margin-bottom: 30px; }
+.category-tabs a {
+  display: inline-block; padding: 10px 20px; margin: 0 5px;
+  background: #ecf0f1; border-radius: 20px; text-decoration: none; color: #2c3e50;
+}
+.category-tabs a.active, .category-tabs a:hover { background: #3498db; color: white; }
+
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+.product-card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; background: white; }
+.product-card img { width: 100%; height: 300px; object-fit: cover; }
+.product-info { padding: 15px; }
+.product-name a { text-decoration: none; color: #2c3e50; font-size: 18px; }
+.product-price { font-size: 20px; color: #e74c3c; margin: 10px 0; }
+.in-stock { color: green; }
+.out-of-stock { color: red; font-weight: bold; }
+.product-actions { display: flex; justify-content: space-between; margin-top: 15px; }
+.btn-detail, .btn-cart { padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; }
+.btn-detail { background: #7f8c8d; color: white; text-decoration: none; }
+.btn-cart { background: #3498db; color: white; }
+.btn-cart:disabled { background: #95a5a6; cursor: not-allowed; }
+
+.pagination { text-align: center; margin: 50px 0; }
+.pagination a {
+  display: inline-block; padding: 8px 12px; margin: 0 4px;
+  background: #ecf0f1; color: #2c3e50; text-decoration: none; border-radius: 4px;
+}
+.pagination a.active { background: #3498db; color: white; }
+.pagination a:hover { background: #34495e; color: white; }
+
+footer { background: #2c3e50; color: white; text-align: center; padding: 30px 0; margin-top: 50px; }
