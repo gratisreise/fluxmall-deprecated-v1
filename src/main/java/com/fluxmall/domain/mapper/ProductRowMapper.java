@@ -1,4 +1,4 @@
-package com.fluxmall.mapper;
+package com.fluxmall.domain.mapper;
 
 
 import com.fluxmall.domain.Product;

@@ -42,13 +42,14 @@ public class ProductService {
 
     /**
      * 상품 상세 조회
+     * 존재검증 먼저 그 다음에 반환하는 형식으로
      */
     public ProductVO getProductById(Long id) {
         ProductVO product = productDao.findById(id);
         if (product != null && product.getStatus() == ProductStatus.ON_SALE) {
             return product;
         }
-        return null;  // 판매중이 아니면 null 반환 (또는 예외 처리 나중에)
+        return null;
     }
 
     /**
@@ -65,10 +66,7 @@ public class ProductService {
 
     /**
      * 상품 키워드 검색 (상품명 OR 설명)
-     * @param keyword 검색어
-     * @param page 페이지
-     * @param size 페이지 크기
-     * @return 검색 결과 리스트
+     * 페이징 형태 추상화로 분리 필요
      */
     public List<ProductVO> searchProducts(String keyword, int page, int size) {
         if (keyword == null || keyword.trim().isEmpty()) {
@@ -84,8 +82,6 @@ public class ProductService {
      * 전체 상품 수 조회 (페이징용)
      */
     public int getTotalProductCount(ProductCategory category) {
-        // 필요시 ProductDao에 count 메서드 추가
-        // 지금은 간단히 전체 목록 크기로 대체 (실무에선 별도 COUNT 쿼리)
         return productDao.findAll(0, Integer.MAX_VALUE, category).size();
     }
 
@@ -99,14 +95,12 @@ public class ProductService {
 
         int updatedRows = productDao.updateStock(productId, quantity);
         if (updatedRows > 0) {
-            // 재고가 0이 되면 자동으로 품절 처리 (옵션)
             ProductVO product = productDao.findById(productId);
             if (product != null && product.getStockQuantity() <= 0) {
                 product.setStatus(ProductStatus.SOLD_OUT);
-                // 별도 update 쿼리 필요시 추가
             }
             return true;
         }
-        return false;  // 재고 부족
+        return false;
     }
 }
