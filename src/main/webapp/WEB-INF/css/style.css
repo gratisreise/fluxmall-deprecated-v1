@@ -650,3 +650,79 @@ section h2 {
 .success-notice p {
   margin: 10px 0;
 }
+
+
+/* 주문 내역 목록 페이지 */
+.empty-order {
+  text-align: center;
+  padding: 100px 20px;
+  color: #7f8c8d;
+  font-size: 20px;
+}
+
+.empty-order p {
+  margin-bottom: 30px;
+}
+
+.order-list-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 30px 0;
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.order-list-table th,
+.order-list-table td {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.order-list-table th {
+  background: #f8f9fa;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.order-list-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.order-number {
+  font-size: 16px;
+}
+
+.price {
+  font-size: 18px;
+  color: #e74c3c;
+}
+
+.status-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  color: white;
+}
+
+.status-pending { background: #e67e22; }
+.status-paid { background: #3498db; }
+.status-preparing { background: #9b59b6; }
+.status-shipped { background: #34495e; }
+.status-delivered { background: #27ae60; }
+.status-cancelled { background: #7f8c8d; }
+.status-refunded { background: #c0392b; }
+
+.btn-detail-small {
+  padding: 8px 16px;
+  background: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.btn-detail-small:hover {
+  background: #2980b9;
+}
