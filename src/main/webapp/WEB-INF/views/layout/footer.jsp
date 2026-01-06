@@ -1,16 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: junghokim
-  Date: 2026. 1. 5.
-  Time: 오후 12:48
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-</body>
-</html>
+<footer class="footer">
+    <div class="container">
+        <p>&copy; 2026 FluxMall. All rights reserved.</p>
+        <p>고객센터: 1234-5678 | 이메일: support@fluxmall.com</p>
+    </div>
+</footer>
