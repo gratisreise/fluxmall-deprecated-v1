@@ -1,185 +1,129 @@
 package com.fluxmall.controller;
 
-import com.fluxmall.dao.OrderDao;
-import com.fluxmall.domain.vo.*;
-import com.fluxmall.service.CartService;
+import com.fluxmall.domain.vo.MemberVO;
+import com.fluxmall.domain.vo.OrderVO;
+import com.fluxmall.domain.vo.ProductVO;
+import com.fluxmall.service.MemberService;
 import com.fluxmall.service.OrderService;
 import com.fluxmall.service.ProductService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
 @RequestMapping("/order")
-@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderService orderService;
-    private final CartService cartService;
     private final ProductService productService;
-    private final OrderDao orderDao;
+    private final MemberService memberService;
 
-    /**
-     * 주문서 작성 페이지 - 장바구니 기반
-     */
-    @GetMapping("/checkout")
-    public String checkoutForm(HttpSession session, Model model) {
-        MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
+    @Autowired
+    public OrderController(OrderService orderService, ProductService productService, MemberService memberService) {
+        this.orderService = orderService;
+        this.productService = productService;
+        this.memberService = memberService;
+    }
+
+    @GetMapping("/create/{productId}")
+    public String createForm(@PathVariable Long productId, Model model, HttpSession session) {
+        MemberVO loginMember = memberService.getLoginMember(session);
         if (loginMember == null) {
             return "redirect:/member/login";
         }
 
-        List<CartItemVO> cartItems = cartService.getCartItems(session);
-        if (cartItems == null || cartItems.isEmpty()) {
-            model.addAttribute("error", "장바구니가 비어 있습니다.");
-            return "redirect:/cart";
+        ProductVO product = productService.getProductDetail(productId);
+        if (product == null || !product.isOnSale()) {
+            return "redirect:/product/list";
         }
 
-        int totalPrice = cartService.calculateTotalPrice(cartItems);
-
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("member", loginMember);
-
-        return "order/checkout";
+        model.addAttribute("product", product);
+        model.addAttribute("quantity", 1);
+        return "order/create";
     }
 
-    /**
-     * 바로구매 주문서 작성 페이지
-     */
-    @GetMapping("/direct")
-    public String directCheckout(
-            @RequestParam Long productId,
-            @RequestParam(defaultValue = "1") int quantity,
-            HttpSession session,
-            Model model) {
-
-        MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
-
-        ProductVO product = productService.getProductById(productId);
-        if (product == null || product.getStockQuantity() < quantity) {
-            model.addAttribute("error", "상품 재고가 부족하거나 판매 중이 아닙니다.");
-            return "redirect:/products/" + productId;
-        }
-
-        // 임시 OrderItemVO 생성
-        CartItemVO tempItem = CartItemVO.builder()
-                .productId(product.getId())
-                .productName(product.getName())
-                .productPrice(product.getPrice())
-                .quantity(quantity)
-                .build();
-
-        List<CartItemVO> tempCartItems = List.of(tempItem);
-        int totalPrice = product.getPrice() * quantity;
-
-        model.addAttribute("cartItems", tempCartItems);  // checkout.jsp 재사용 위해 같은 이름
-        model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("member", loginMember);
-        model.addAttribute("isDirect", true);
-
-        return "order/checkout";
-    }
-
-    /**
-     * 주문 처리 (장바구니 또는 바로구매)
-     */
     @PostMapping("/create")
-    public String createOrder(
-            @RequestParam String shippingAddress,
-            @RequestParam(required = false, defaultValue = "false") boolean isDirectBuy,
-            HttpSession session,
-            Model model) {
-
-        MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
-
-        Long orderId;
+    public String createOrder(@RequestParam Long productId,
+                              @RequestParam int quantity,
+                              HttpSession session,
+                              RedirectAttributes redirectAttributes) {
         try {
-            if (isDirectBuy) {
-                model.addAttribute("error", "바로구매는 별도 처리 필요");
-                return "order/checkout";
-            } else {
-                List<CartItemVO> cartItems = cartService.getCartItems(session);
-                orderId = orderService.createOrder(shippingAddress, false, cartItems, null, session);
-            }
-        } catch (Exception e) {
-            model.addAttribute("error", "주문 실패: " + e.getMessage());
-            return "order/checkout";
+            Long orderId = orderService.createOrder(productId, quantity, session);
+            redirectAttributes.addFlashAttribute("message", "주문이 생성되었습니다.");
+            return "redirect:/order/detail/" + orderId;
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/product/detail/" + productId;
         }
-
-        if (orderId == null) {
-            model.addAttribute("error", "주문 처리 중 오류가 발생했습니다.");
-            return "order/checkout";
-        }
-
-        return "redirect:/order/success?orderId=" + orderId;
     }
 
-    /**
-     * 주문 완료 페이지
-     */
-    @GetMapping("/success")
-    public String orderSuccess(@RequestParam Long orderId, Model model, HttpSession session) {
+    @GetMapping("/detail/{orderId}")
+    public String orderDetail(@PathVariable Long orderId, Model model, HttpSession session) {
         OrderVO order = orderService.getOrderDetail(orderId, session);
         if (order == null) {
-            return "redirect:/";
+            return "redirect:/order/list";
         }
 
-        List<OrderItemVO> items = orderDao.findOrderItemsByOrderId(orderId);  // 필요시 주입
         model.addAttribute("order", order);
-        model.addAttribute("items", items);
-
-        return "order/success";
-    }
-
-    /**
-     * 주문 내역 목록
-     */
-    @GetMapping("/list")
-    public String orderList(
-            @RequestParam(defaultValue = "1") int page,
-            HttpSession session,
-            Model model) {
-
-        MemberVO loginMember = (MemberVO) session.getAttribute("loginMember");
-        if (loginMember == null) {
-            return "redirect:/member/login";
-        }
-
-        int size = 10;
-        List<OrderVO> orders = orderService.getOrdersByMember(loginMember.getId(), page, size);
-
-        model.addAttribute("orders", orders);
-        model.addAttribute("currentPage", page);
-
-        return "order/list";
-    }
-
-    /**
-     * 주문 상세 조회
-     */
-    @GetMapping("/{orderId}")
-    public String orderDetail(@PathVariable Long orderId, HttpSession session, Model model) {
-        OrderVO order = orderService.getOrderDetail(orderId, session);
-        if (order == null) {
-            model.addAttribute("error", "주문을 찾을 수 없거나 권한이 없습니다.");
-            return "error/404";
-        }
-
-        List<OrderItemVO> items = orderDao.findOrderItemsByOrderId(orderId);
-        model.addAttribute("order", order);
-        model.addAttribute("items", items);
-
         return "order/detail";
+    }
+
+    @PostMapping("/payment/{orderId}")
+    public String processPayment(@PathVariable Long orderId,
+                                 HttpSession session,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            boolean success = orderService.processPayment(orderId, session);
+            if (success) {
+                redirectAttributes.addFlashAttribute("message", "결제가 완료되었습니다.");
+                return "redirect:/order/complete/" + orderId;
+            } else {
+                redirectAttributes.addFlashAttribute("error", "결제 처리에 실패했습니다.");
+                return "redirect:/order/detail/" + orderId;
+            }
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            return "redirect:/order/detail/" + orderId;
+        }
+    }
+
+    @GetMapping("/complete/{orderId}")
+    public String orderComplete(@PathVariable Long orderId, Model model, HttpSession session) {
+        OrderVO order = orderService.getOrderDetail(orderId, session);
+        if (order == null || !order.isPaid()) {
+            return "redirect:/order/list";
+        }
+
+        model.addAttribute("order", order);
+        return "order/complete";
+    }
+
+    @PostMapping("/cancel/{orderId}")
+    public String cancelOrder(@PathVariable Long orderId,
+                            HttpSession session,
+                            RedirectAttributes redirectAttributes) {
+        try {
+            boolean success = orderService.cancelOrder(orderId, session);
+            if (success) {
+                redirectAttributes.addFlashAttribute("message", "주문이 취소되었습니다.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "주문 취소에 실패했습니다.");
+            }
+        } catch (RuntimeException e) {
+            redirectAttributes.addFlashAttribute("error", e.getMessage());
+        }
+        return "redirect:/order/list";
+    }
+
+    @GetMapping("/list")
+    public String orderList(Model model, HttpSession session) {
+        List<OrderVO> orders = orderService.getMyOrders(session);
+        model.addAttribute("orders", orders);
+        return "order/list";
     }
 }
